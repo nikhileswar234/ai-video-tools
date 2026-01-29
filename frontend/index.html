@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Video Tools</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>🎬 AI Video Tools</h1>
+<p>Upload only videos you own or have permission to use</p>
+
+<input type="file" id="video">
+
+<div class="buttons">
+  <button onclick="send('audio')">🎵 Extract Audio</button>
+  <button onclick="send('compress')">📉 Compress Video</button>
+  <button onclick="send('metadata')">📊 Metadata</button>
+  <button onclick="send('thumbnail')">🖼 Thumbnail</button>
+</div>
+
+<pre id="result"></pre>
+
+<script src="script.js"></script>
+</body>
+</html>
