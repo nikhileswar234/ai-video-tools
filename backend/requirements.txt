@@ -1,8 +1,10 @@
 flask
 flask-cors
-moviepy
+moviepy==1.0.3
 imageio
 imageio-ffmpeg
 opencv-python-headless
 numpy
+
+
 
