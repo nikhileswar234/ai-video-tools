@@ -1,4 +1,4 @@
-const API = "https://ai-video-tools-mw0g.onrender.com";
+const API = " https://ai-video-tools-1.onrender.com";
 
 function send(type) {
   const file = document.getElementById("video").files[0];
@@ -32,4 +32,5 @@ function send(type) {
   })
   .catch(() => alert("Server error or file too large"));
 }
+
 
