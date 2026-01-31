@@ -1,10 +1,4 @@
 flask
 flask-cors
-moviepy==1.0.3
-imageio
-imageio-ffmpeg
-opencv-python-headless
-numpy
-
-
-
+yt-dlp
+gunicorn
