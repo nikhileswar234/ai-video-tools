@@ -9,7 +9,7 @@ function send(action) {
 
   result.textContent = "Processing... ⏳";
 
-  fetch("https://YOUR-BACKEND-URL.onrender.com/process", {
+  fetch("https://ai-video-tools-4.onrender.com", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -27,3 +27,4 @@ function send(action) {
     result.textContent = "Server error ❌";
   });
 }
+
