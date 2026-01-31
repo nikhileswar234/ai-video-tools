@@ -1,36 +1,29 @@
-const API = " https://ai-video-tools-1.onrender.com";
+function send(action) {
+  const url = document.getElementById("videoUrl").value;
+  const result = document.getElementById("result");
 
-function send(type) {
-  const file = document.getElementById("video").files[0];
-  if (!file) {
-    alert("Upload a video first");
+  if (!url) {
+    alert("Please paste a video URL");
     return;
   }
 
-  const formData = new FormData();
-  formData.append("video", file);
+  result.textContent = "Processing... ⏳";
 
-  fetch(`${API}/${type}`, {
+  fetch("https://YOUR-BACKEND-URL.onrender.com/process", {
     method: "POST",
-    body: formData
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      url: url,
+      action: action
+    })
   })
-  .then(res => {
-    if (type === "metadata") return res.json();
-    return res.blob();
-  })
+  .then(res => res.json())
   .then(data => {
-    if (type === "metadata") {
-      document.getElementById("result").textContent =
-        JSON.stringify(data, null, 2);
-    } else {
-      const url = window.URL.createObjectURL(data);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = "output";
-      a.click();
-    }
+    result.textContent = JSON.stringify(data, null, 2);
   })
-  .catch(() => alert("Server error or file too large"));
+  .catch(() => {
+    result.textContent = "Server error ❌";
+  });
 }
-
-
