@@ -6,20 +6,19 @@
 </head>
 <body>
 
-<h1>🎬 AI Video Tools</h1>
-<p>Upload only videos you own or have permission to use</p>
+  <h1>🎬 AI Video Tools</h1>
+  <p>Paste a public video link (YouTube / Instagram etc.)</p>
 
-<input type="file" id="video">
+  <input type="text" id="videoUrl" placeholder="Paste video URL here">
 
-<div class="buttons">
-  <button onclick="send('audio')">🎵 Extract Audio</button>
-  <button onclick="send('compress')">📉 Compress Video</button>
-  <button onclick="send('metadata')">📊 Metadata</button>
-  <button onclick="send('thumbnail')">🖼 Thumbnail</button>
-</div>
+  <div class="buttons">
+    <button onclick="send('metadata')">📄 Metadata</button>
+    <button onclick="send('thumbnail')">🖼 Thumbnail</button>
+    <button onclick="send('audio')">🎵 Extract Audio</button>
+  </div>
 
-<pre id="result"></pre>
+  <pre id="result"></pre>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
