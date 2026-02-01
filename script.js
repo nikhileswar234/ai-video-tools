@@ -28,7 +28,7 @@ function upload() {
 
   result.textContent = "Uploading & processing... ⏳";
 
-  fetch("https://YOUR-RENDER-APP.onrender.com/upload", {
+  fetch("https://ai-video-tools-gobr.onrender.com", {
     method: "POST",
     body: formData
   })
@@ -40,3 +40,4 @@ function upload() {
     result.textContent = "Server error ❌";
   });
 }
+
