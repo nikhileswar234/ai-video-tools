@@ -1,6 +1,3 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import os
 from moviepy.editor import VideoFileClip
 
 app = Flask(__name__)
@@ -45,3 +42,4 @@ def extract_audio():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
