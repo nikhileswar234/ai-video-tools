@@ -1,44 +1,40 @@
-function upload() {
+const BACKEND_URL = " https://ai-video-tools-s0oo.onrender.com";
+
+async function extractAudio() {
   const fileInput = document.getElementById("video");
   const result = document.getElementById("result");
 
   if (!fileInput.files.length) {
-    alert("Please select a video file");
+    result.textContent = "❌ Please select a video";
     return;
   }
 
   const file = fileInput.files[0];
 
-  // Size limits (in bytes)
-  const MIN_SIZE = 5 * 1024 * 1024;   // 5MB
-  const MAX_SIZE = 25 * 1024 * 1024;  // 25MB
-
-  if (file.size < MIN_SIZE) {
-    alert("File too small (minimum 5MB)");
-    return;
-  }
-
-  if (file.size > MAX_SIZE) {
-    alert("File too large (maximum 25MB)");
+  if (file.size < 5 * 1024 * 1024 || file.size > 25 * 1024 * 1024) {
+    result.textContent = "❌ File size must be 5MB–25MB";
     return;
   }
 
   const formData = new FormData();
   formData.append("video", file);
 
-  result.textContent = "Uploading & processing... ⏳";
+  result.textContent = "⏳ Processing...";
 
-  fetch("https://ai-video-tools-s0oo.onrender.com", {
-    method: "POST",
-    body: formData
-  })
-  .then(res => res.json())
-  .then(data => {
-    result.textContent = JSON.stringify(data, null, 2);
-  })
-  .catch(() => {
-    result.textContent = "Server error ❌";
-  });
+  try {
+    const res = await fetch(`${BACKEND_URL}/extract-audio`, {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      result.textContent = "✅ Audio extracted successfully";
+    } else {
+      result.textContent = "❌ Server error";
+    }
+  } catch (err) {
+    result.textContent = "❌ Server error";
+  }
 }
-
-
