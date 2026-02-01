@@ -1,25 +1,27 @@
 const BACKEND_URL = "https://ai-video-tools-dmpw.onrender.com";
 
-async function extractAudio() {
+async function send(action) {
   const fileInput = document.getElementById("video");
   const result = document.getElementById("result");
 
   if (!fileInput.files.length) {
-    result.textContent = "❌ Please select a video";
+    result.textContent = "Please select a video file";
     return;
   }
 
   const file = fileInput.files[0];
 
-  if (file.size < 5 * 1024 * 1024 || file.size > 25 * 1024 * 1024) {
-    result.textContent = "❌ File size must be 5MB–25MB";
+  // file size check (5MB – 25MB)
+  const sizeMB = file.size / (1024 * 1024);
+  if (sizeMB < 5 || sizeMB > 25) {
+    result.textContent = "File size must be between 5MB and 25MB";
     return;
   }
 
   const formData = new FormData();
   formData.append("video", file);
 
-  result.textContent = "⏳ Processing...";
+  result.textContent = "Processing...";
 
   try {
     const res = await fetch(`${BACKEND_URL}/extract-audio`, {
@@ -27,15 +29,13 @@ async function extractAudio() {
       body: formData
     });
 
-    const data = await res.json();
-
-    if (data.success) {
-      result.textContent = "✅ Audio extracted successfully";
-    } else {
-      result.textContent = "❌ Server error";
+    if (!res.ok) {
+      throw new Error("Server error");
     }
+
+    const data = await res.json();
+    result.textContent = data.message || "Done";
   } catch (err) {
-    result.textContent = "❌ Server error";
+    result.textContent = "Server error ❌";
   }
 }
-
