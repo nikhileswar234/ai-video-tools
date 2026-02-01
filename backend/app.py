@@ -1,47 +1,49 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import yt_dlp
+import os
+from moviepy.editor import VideoFileClip
 
 app = Flask(__name__)
 CORS(app)
 
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+# Size limits (bytes)
+MIN_SIZE = 5 * 1024 * 1024    # 5MB
+MAX_SIZE = 25 * 1024 * 1024   # 25MB
+
 @app.route("/")
 def home():
-    return "AI Video Tools Backend Running"
+    return "Backend running"
 
-@app.route("/process", methods=["POST"])
-def process():
-    data = request.json
-    url = data.get("url")
-    action = data.get("action")
+@app.route("/upload", methods=["POST"])
+def upload():
+    if "video" not in request.files:
+        return jsonify({"error": "No file uploaded"}), 400
 
-    if not url:
-        return jsonify({"error": "No URL provided"}), 400
+    file = request.files["video"]
+    file.seek(0, os.SEEK_END)
+    size = file.tell()
+    file.seek(0)
 
-    ydl_opts = {
-        "quiet": True,
-        "skip_download": True
-    }
+    if size < MIN_SIZE:
+        return jsonify({"error": "File too small"}), 400
 
-    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        info = ydl.extract_info(url, download=False)
+    if size > MAX_SIZE:
+        return jsonify({"error": "File too large"}), 400
 
-    if action == "metadata":
-        return jsonify({
-            "title": info.get("title"),
-            "duration": info.get("duration"),
-            "uploader": info.get("uploader"),
-            "views": info.get("view_count")
-        })
+    video_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(video_path)
 
-    if action == "thumbnail":
-        return jsonify({
-            "thumbnail_url": info.get("thumbnail")
-        })
+    # Example: extract duration (light operation)
+    clip = VideoFileClip(video_path)
+    duration = clip.duration
+    clip.close()
 
-    if action == "audio":
-        return jsonify({
-            "message": "Audio extraction can be enabled with download=True"
-        })
+    os.remove(video_path)
 
-    return jsonify({"error": "Invalid action"})
+    return jsonify({
+        "message": "Video processed successfully",
+        "duration_seconds": duration
+    })
