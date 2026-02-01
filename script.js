@@ -1,23 +1,36 @@
-function send(action) {
-  const url = document.getElementById("videoUrl").value;
+function upload() {
+  const fileInput = document.getElementById("video");
   const result = document.getElementById("result");
 
-  if (!url) {
-    alert("Please paste a video URL");
+  if (!fileInput.files.length) {
+    alert("Please select a video file");
     return;
   }
 
-  result.textContent = "Processing... ⏳";
+  const file = fileInput.files[0];
 
-  fetch("https://ai-video-tools-4.onrender.com", {
+  // Size limits (in bytes)
+  const MIN_SIZE = 5 * 1024 * 1024;   // 5MB
+  const MAX_SIZE = 25 * 1024 * 1024;  // 25MB
+
+  if (file.size < MIN_SIZE) {
+    alert("File too small (minimum 5MB)");
+    return;
+  }
+
+  if (file.size > MAX_SIZE) {
+    alert("File too large (maximum 25MB)");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("video", file);
+
+  result.textContent = "Uploading & processing... ⏳";
+
+  fetch("https://YOUR-RENDER-APP.onrender.com/upload", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      url: url,
-      action: action
-    })
+    body: formData
   })
   .then(res => res.json())
   .then(data => {
@@ -27,4 +40,3 @@ function send(action) {
     result.textContent = "Server error ❌";
   });
 }
-
