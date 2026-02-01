@@ -1,4 +1,4 @@
-const BACKEND_URL = " https://ai-video-tools-s0oo.onrender.com";
+const BACKEND_URL = "https://ai-video-tools-dmpw.onrender.com";
 
 async function extractAudio() {
   const fileInput = document.getElementById("video");
@@ -38,3 +38,4 @@ async function extractAudio() {
     result.textContent = "❌ Server error";
   }
 }
+
