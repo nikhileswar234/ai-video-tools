@@ -6,19 +6,17 @@
 </head>
 <body>
 
-  <h1>🎬 AI Video Tools</h1>
-  <p>Paste a public video link (YouTube / Instagram etc.)</p>
+<h1>🎬 AI Video Tools</h1>
+<p>Select a video file (5MB – 25MB)</p>
 
-  <input type="text" id="videoUrl" placeholder="Paste video URL here">
+<input type="file" id="video" accept="video/*">
 
-  <div class="buttons">
-    <button onclick="send('metadata')">📄 Metadata</button>
-    <button onclick="send('thumbnail')">🖼 Thumbnail</button>
-    <button onclick="send('audio')">🎵 Extract Audio</button>
-  </div>
+<br><br>
+<button onclick="upload()">🎵 Extract Audio</button>
 
-  <pre id="result"></pre>
+<pre id="result"></pre>
 
-  <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
+
